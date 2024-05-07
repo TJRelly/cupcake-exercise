@@ -1,0 +1,8 @@
+.cupcake-li, i{
+    align-self: center;
+}
+
+.del-cupcake {
+    font-size: 1rem;
+    cursor: pointer;
+}

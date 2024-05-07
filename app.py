@@ -1,6 +1,6 @@
 """Flask app for Cupcakes"""
 
-from flask import Flask, jsonify, render_template, redirect, flash, request
+from flask import Flask, jsonify, render_template, redirect, request
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, Cupcake
 
@@ -27,9 +27,8 @@ def get_home_page():
 @app.route('/cupcakes')
 def get_cupcakes():
     """Shows all cupcakes"""
-    cupcakes = db.session.query(Cupcake.flavor)
     
-    return render_template('cupcakes.html', cupcakes=cupcakes)
+    return render_template('cupcakes.html')
 
 @app.route('/api/cupcakes')
 def get_api_cupcakes():
@@ -69,3 +68,30 @@ def create_cupcake():
     db.session.commit()
           
     return (jsonify(new_cupcake=new_cupcake.serialize()), 201)
+
+@app.route('/api/cupcakes/<cupcake_id>', methods=["PATCH"])
+def edit_cupcake(cupcake_id):
+    """Edits a cupcake
+    Responds in JSON : {cupcake: {id, flavor, size, rating,image}}
+    """
+    cupcake = Cupcake.query.get(cupcake_id)
+
+    cupcake.flavor = request.json.get("flavor", cupcake.flavor)
+    cupcake.size = request.json.get("size", cupcake.size)
+    cupcake.rating = request.json.get("rating", cupcake.rating)
+    cupcake.image = request.json.get("image", cupcake.image)
+    
+    db.session.add(cupcake)
+    db.session.commit()
+          
+    return jsonify(cupcake=cupcake.serialize())
+    
+@app.route('/api/cupcakes/<cupcake_id>', methods=["DELETE"])
+def delete_cupcake(cupcake_id):
+    """Deletes a cupcake"""
+    cupcake = Cupcake.query.get(cupcake_id)
+    
+    db.session.delete(cupcake)
+    db.session.commit()
+    
+    return jsonify(message = "Deleted")

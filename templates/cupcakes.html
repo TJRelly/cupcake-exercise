@@ -9,11 +9,35 @@ Cupcakes
 <main class="container">
     <h1 class="display-1">Cupcakes</h1>
 
-    <ul>
-        {% for cupcake in cupcakes %}
-        <li>{{cupcake.flavor}}</li>
-        {% endfor %}
+    <ul class="lead cupcake-ul">      
     </ul>
+    
+    <form class="form-group add-cupcake-form needs-validation pb-5" method="POST" novalidate>
+       <label for="flavor form-label">Flavor</label>
+       <input class="form-control my-2" id="flavor" type="text" placeholder="enter a flavor" name="flavor" required>
+       <div class="valid-feedback">
+        Looks good!
+      </div>
+
+       <label for="size form-label">Size</label>
+       <select class="form-control my-2" id="size" type="text" placeholder="enter a size" name="size" required>
+        <option value="small">small</option>
+        <option value="medium">medium</option>
+        <option value="large">large</option>
+       </select>
+
+       <label for="rating form-label">Rating</label>
+       <select class="form-control my-2" id="rating" type="text" placeholder="enter a rating" name="rating" required>
+        {% for num in range(1, 11) %}
+        <option value={{num}}>{{num}}</option>
+        {% endfor %}
+       </select>
+
+       <label for="image-url form-label">Image URL</label>
+       <input class="form-control my-2" id="image-url" type="text" placeholder="enter a image url" name="image">
+
+       <button type="submit" class="btn btn-info my-2 text-light add-cupcake">Add Cupcake</button>
+    </form>
 </main>
 
 {% endblock %}
